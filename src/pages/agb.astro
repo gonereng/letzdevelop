@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../content/site";
+---
+
+<BaseLayout title={`AGB – ${site.name}`} description="Allgemeine Geschäftsbedingungen von LetzDevelop.">
+  <article class="wrap section prose-legal">
+    <h1>Allgemeine Geschäftsbedingungen</h1>
+    <p>Stand: September 2026. Diese Kurzfassung gilt, bis ein vollständiger Vertragstext vorliegt.</p>
+
+    <h2>1. Geltungsbereich</h2>
+    <p>
+      Diese Bedingungen gelten für Website-Pakete und optionales Hosting von {site.name} gegenüber
+      Unternehmerinnen und Unternehmern. Abweichungen gelten nur, wenn sie schriftlich festgehalten
+      sind.
+    </p>
+
+    <h2>2. Angebot und Umfang</h2>
+    <p>
+      Die auf der Website genannten Preise sind Startpreise (ab … €). Der verbindliche Umfang steht
+      im schriftlichen Angebot. Erst mit Annahme des Angebots kommt ein Vertrag zustande.
+    </p>
+
+    <h2>3. Redesign-Vorschau</h2>
+    <p>
+      Die Redesign-Vorschau ist unverbindlich. Nach der Prüfung besteht keine Kaufverpflichtung.
+      Skizzen und Vorschläge bleiben bis zur Beauftragung geistiges Eigentum von {site.name}.
+    </p>
+
+    <h2>4. Hosting</h2>
+    <p>
+      Hosting ist ein monatliches Zusatzmodul und nicht im einmaligen Paketpreis enthalten. Es kann
+      zu jedem Paket hinzugebucht oder weggelassen werden. Laufzeit und Kündigung stehen im
+      jeweiligen Angebot.
+    </p>
+
+    <h2>5. Mitwirkung</h2>
+    <p>
+      Texte, Bilder und Freigaben liefert der Auftraggeber rechtzeitig. Verzögerungen verlängern
+      die Umsetzungszeit.
+    </p>
+
+    <h2>6. Kontakt</h2>
+    <p>
+      Fragen zu diesen Bedingungen: <a href={`mailto:${site.email}`}>{site.email}</a>.
+    </p>
+  </article>
+</BaseLayout>

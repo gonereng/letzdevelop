@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../content/site";
+---
+
+<BaseLayout title={`Impressum – ${site.name}`} description="Impressum von LetzDevelop.">
+  <article class="wrap section prose-legal">
+    <h1>Impressum</h1>
+    <p>
+      Angaben gemäß den Transparenzpflichten für Anbieterinnen und Anbieter von Telemedien in
+      Luxemburg.
+    </p>
+    <h2>Diensteanbieter</h2>
+    <p>
+      {site.name}<br />
+      Luxemburg<br />
+      E-Mail: <a href={`mailto:${site.email}`}>{site.email}</a><br />
+      Website: <a href={site.url}>{site.domain}</a>
+    </p>
+    <p>
+      Angaben zum Rechtsträger (Rechtsform, Sitz, Handelsregister, Umsatzsteuer-Identifikation)
+      folgen. Bis dahin ist {site.email} der Kontakt für alle Anfragen.
+    </p>
+    <h2>Verantwortlich für den Inhalt</h2>
+    <p>Verantwortlich ist die Betreiberin bzw. der Betreiber unter der oben genannten Adresse.</p>
+  </article>
+</BaseLayout>
