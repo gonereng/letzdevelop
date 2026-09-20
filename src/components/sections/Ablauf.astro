@@ -1,0 +1,23 @@
+---
+import { site } from "../../content/site";
+---
+
+<section class="section pt-0" id="ablauf" aria-labelledby="ablauf-title">
+  <div class="wrap">
+    <p class="section-kicker">Ablauf</p>
+    <h2 id="ablauf-title" class="text-3xl md:text-5xl max-w-3xl">
+      Vier Schritte, ohne Workshop-Marathon.
+    </h2>
+    <ol class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+      {
+        site.steps.map((step, index) => (
+          <li class="relative">
+            <p class="font-display text-5xl text-red/80">{String(index + 1).padStart(2, "0")}</p>
+            <h3 class="mt-3 text-2xl">{step.title}</h3>
+            <p class="mt-3 text-muted">{step.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
