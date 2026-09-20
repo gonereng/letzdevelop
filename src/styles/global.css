@@ -245,4 +245,29 @@
     border-top: 1px solid var(--color-stone);
     margin: 0;
   }
+
+  .prose-legal {
+    max-width: 42rem;
+  }
+
+  .prose-legal h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+
+  .prose-legal h2 {
+    margin-top: 2rem;
+    font-size: 1.6rem;
+  }
+
+  .prose-legal p,
+  .prose-legal ul {
+    margin-top: 0.9rem;
+    color: var(--color-muted);
+  }
+
+  .prose-legal a {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
 }
