@@ -1,0 +1,20 @@
+---
+import LeadForm from "../LeadForm.astro";
+import { site } from "../../content/site";
+---
+
+<section class="section pt-0" id="kontakt" aria-labelledby="kontakt-title">
+  <div class="wrap grid gap-12 lg:grid-cols-2">
+    <div>
+      <p class="section-kicker">Kontakt</p>
+      <h2 id="kontakt-title" class="text-3xl md:text-5xl">Schreiben Sie uns – auf Deutsch, ohne Umweg.</h2>
+      <p class="lede mt-5">
+        Ob Paketfrage oder Relaunch: eine Nachricht genügt. Alternativ direkt an{" "}
+        <a class="underline" href={`mailto:${site.email}`}>{site.email}</a>.
+      </p>
+    </div>
+    <div class="rounded-2xl border border-stone bg-cream p-6 md:p-8">
+      <LeadForm variant="kontakt" />
+    </div>
+  </div>
+</section>
