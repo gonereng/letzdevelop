@@ -1,1 +1,248 @@
 @import "tailwindcss";
+
+@theme {
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Source Sans 3", "Source Sans Pro", ui-sans-serif, system-ui, sans-serif;
+  --color-ink: #1c1915;
+  --color-paper: #f4efe6;
+  --color-cream: #fbf7f0;
+  --color-stone: #d9d0c3;
+  --color-moss: #3f5c4a;
+  --color-moss-dark: #2c4235;
+  --color-red: #c8102e;
+  --color-red-dark: #9e0c24;
+  --color-muted: #5c574f;
+  --color-chip: #ece4d6;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    hyphens: auto;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 560;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    hyphens: none;
+  }
+}
+
+@layer components {
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: 0.75rem;
+    z-index: 80;
+    transform: translateY(-150%);
+    background: var(--color-ink);
+    color: var(--color-paper);
+    padding: 0.5rem 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  .skip-link:focus {
+    transform: none;
+  }
+
+  .visually-hidden:where(:not(:focus-within, :active)) {
+    position: absolute !important;
+    clip-path: inset(50%) !important;
+    overflow: hidden !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: color-mix(in srgb, var(--color-paper) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid transparent;
+  }
+
+  @supports (container-type: scroll-state) {
+    html {
+      container-type: scroll-state;
+    }
+
+    @container scroll-state(stuck: top) {
+      .site-header {
+        border-bottom-color: var(--color-stone);
+      }
+    }
+  }
+
+  .wrap {
+    width: min(72rem, calc(100% - 2.5rem));
+    margin-inline: auto;
+  }
+
+  @media (min-width: 768px) {
+    .wrap {
+      width: min(72rem, calc(100% - 4rem));
+    }
+  }
+
+  .mark {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .mark-letz {
+    position: relative;
+  }
+
+  .mark-letz::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.08em;
+    height: 0.12em;
+    background: var(--color-red);
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    min-height: 2.75rem;
+    padding: 0.55rem 1.15rem;
+    border-radius: 999px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease;
+  }
+
+  .cta-primary {
+    background: var(--color-red);
+    color: #fff;
+  }
+
+  .cta-primary:hover {
+    background: var(--color-red-dark);
+  }
+
+  .cta-secondary {
+    background: transparent;
+    color: var(--color-ink);
+    border: 1px solid var(--color-ink);
+  }
+
+  .cta-secondary:hover {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  .section {
+    padding-block: 4rem;
+  }
+
+  @media (min-width: 768px) {
+    .section {
+      padding-block: 6.5rem;
+    }
+  }
+
+  .section-kicker {
+    display: inline-block;
+    margin-bottom: 0.85rem;
+    font-size: 0.8rem;
+    font-weight: 650;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-red);
+  }
+
+  .lede {
+    max-width: 42rem;
+    color: var(--color-muted);
+    font-size: 1.2rem;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .field label {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    appearance: none;
+    width: 100%;
+    border: 1px solid var(--color-stone);
+    background: var(--color-cream);
+    color: var(--color-ink);
+    border-radius: 0.4rem;
+    padding: 0.65rem 0.8rem;
+    font: inherit;
+  }
+
+  .field textarea {
+    min-height: 8rem;
+    resize: vertical;
+  }
+
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .rule {
+    border: 0;
+    border-top: 1px solid var(--color-stone);
+    margin: 0;
+  }
+}
