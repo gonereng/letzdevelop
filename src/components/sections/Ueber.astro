@@ -1,0 +1,21 @@
+---
+import { site } from "../../content/site";
+---
+
+<section class="section bg-chip" id="ueber" aria-labelledby="ueber-title">
+  <div class="wrap grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
+    <div>
+      <p class="section-kicker">Über uns</p>
+      <h2 id="ueber-title" class="text-3xl md:text-5xl max-w-3xl">{site.about.title}</h2>
+      <p class="lede mt-6">{site.about.text}</p>
+    </div>
+    <aside class="rounded-2xl border border-stone bg-cream p-6">
+      <p class="m-0 text-sm uppercase tracking-[0.14em] font-semibold text-red">Direkt</p>
+      <p class="mt-3 text-xl font-display">Keine erfundenen Stimmen, keine Logo-Wand.</p>
+      <p class="mt-3 text-muted">
+        Referenzen nennen wir, wenn ein Betrieb das ausdrücklich möchte – nicht als Kulisse auf
+        dieser Seite.
+      </p>
+    </aside>
+  </div>
+</section>

@@ -1,0 +1,24 @@
+---
+import LeadForm from "../LeadForm.astro";
+import { site } from "../../content/site";
+---
+
+<section class="section bg-moss text-cream" id="vorschau" aria-labelledby="vorschau-title">
+  <div class="wrap grid gap-12 lg:grid-cols-2 lg:items-start">
+    <div>
+      <p class="section-kicker !text-paper/80">Redesign-Vorschau</p>
+      <h2 id="vorschau-title" class="text-3xl md:text-5xl">
+        Sehen Sie eine Richtung – unverbindlich.
+      </h2>
+      <p class="mt-5 text-lg text-stone max-w-xl">
+        Schicken Sie uns die Adresse Ihrer heutigen Seite. In {site.turnaroundDays} Werktagen
+        erhalten Sie einen Vorschlag, wohin der Auftritt gehen könnte. Die Prüfung ist
+        <strong class="text-cream"> unverbindlich</strong>. Danach besteht
+        <strong class="text-cream"> keine Kaufverpflichtung</strong>.
+      </p>
+    </div>
+    <div class="rounded-2xl bg-paper text-ink p-6 md:p-8">
+      <LeadForm variant="vorschau" />
+    </div>
+  </div>
+</section>

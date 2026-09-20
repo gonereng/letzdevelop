@@ -1,0 +1,21 @@
+---
+const chips = [
+  { k: "01", t: "Sitz in Luxemburg" },
+  { k: "02", t: "Feste Paketpreise" },
+  { k: "03", t: "Hosting monatlich" },
+  { k: "04", t: "Auf Deutsch" },
+];
+---
+
+<section class="border-y border-stone bg-cream" aria-label="Kennzeichen">
+  <div class="wrap grid gap-6 py-8 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      chips.map((chip) => (
+        <p class="flex items-baseline gap-3 m-0">
+          <span class="font-display text-red text-sm tracking-widest">{chip.k}</span>
+          <span class="font-semibold">{chip.t}</span>
+        </p>
+      ))
+    }
+  </div>
+</section>

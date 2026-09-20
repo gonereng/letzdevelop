@@ -1,0 +1,17 @@
+---
+import PackageCard from "../PackageCard.astro";
+import { site } from "../../content/site";
+---
+
+<section class="section" id="preise" aria-labelledby="preise-title">
+  <div class="wrap">
+    <p class="section-kicker">Preise</p>
+    <h2 id="preise-title" class="text-3xl md:text-5xl max-w-3xl">
+      Drei Pakete. Hosting monatlich dazu, wenn Sie möchten.
+    </h2>
+    <div class="mt-12 grid gap-6 lg:grid-cols-3">
+      {site.packages.map((pkg) => <PackageCard pkg={pkg} />)}
+    </div>
+    <p class="mt-8 text-sm text-muted max-w-3xl">{site.priceFootnote}</p>
+  </div>
+</section>
