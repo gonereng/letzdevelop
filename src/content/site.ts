@@ -79,18 +79,26 @@ export const site = {
     {
       title: "Neue Website",
       text: "Vom ersten Auftritt bis zur klaren Leistungsseite – in einem der drei Pakete.",
+      href: "/#preise",
+      linkLabel: "Pakete ansehen",
     },
     {
       title: "Relaunch",
       text: "Bestehende Adresse, neuer Auftritt. Inhalte sortieren, Technik auf heutigen Stand.",
+      href: "/#vorschau",
+      linkLabel: "Unverbindliche Vorschau",
     },
     {
       title: "Hosting und Betreuung",
       text: "Monatliches Hosting ab 29 €. Updates und Erreichbarkeit, ohne dass Sie einen Server pflegen.",
+      href: "/#preise",
+      linkLabel: "Hosting auf den Karten",
     },
     {
       title: "Formulare",
       text: "Anfragen landen bei Ihnen – Termine, Offerten, Kontakt. Kein unnötiger Ballast.",
+      href: "/#kontakt",
+      linkLabel: "Kontakt aufnehmen",
     },
   ],
   steps: [

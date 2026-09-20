@@ -34,7 +34,7 @@ const mailto =
       <input type="hidden" name="_subject" value={variant === "vorschau" ? "Vorschau-Anfrage" : "Kontaktanfrage"} />
       <input type="hidden" name="_next" value={next} />
       <input type="hidden" name="formular" value={variant} />
-      <p class="hp">
+      <p class="hp" aria-hidden="true">
         <label>
           Nicht ausfüllen
           <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
@@ -87,16 +87,30 @@ const mailto =
 
       {variant === "vorschau" ? (
         <label class="flex gap-3 text-sm items-start">
-          <input class="mt-1" type="checkbox" name="einverstaendnis" value="ja" required />
-          <span>
+          <input
+            class="mt-1"
+            type="checkbox"
+            name="einverstaendnis"
+            value="ja"
+            required
+            aria-describedby="vorschau-hinweis"
+          />
+          <span id="vorschau-hinweis">
             Ich bin einverstanden, dass LetzDevelop mich zur <strong>unverbindlichen</strong> Vorschau
             kontaktiert. Es entsteht <strong>keine Kaufverpflichtung</strong>.
           </span>
         </label>
       ) : (
         <label class="flex gap-3 text-sm items-start">
-          <input class="mt-1" type="checkbox" name="datenschutz" value="ja" required />
-          <span>
+          <input
+            class="mt-1"
+            type="checkbox"
+            name="datenschutz"
+            value="ja"
+            required
+            aria-describedby="kontakt-datenschutz"
+          />
+          <span id="kontakt-datenschutz">
             Ich habe die{" "}
             <a class="underline" href="/datenschutz">
               Datenschutzerklärung

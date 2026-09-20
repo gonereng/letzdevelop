@@ -35,6 +35,8 @@ PUBLIC_FORMSPREE_ID=yourFormId
 
 Astro exposes `PUBLIC_*` variables to the client. Create a form at [formspree.io](https://formspree.io/) and paste the id (the segment after `/f/`). Point submissions to hello@letzdevelop.lu.
 
+Set the variable **before** `npm run build` (or in the host’s build environment). Astro inlines `PUBLIC_*` values at build time; a runtime-only env change will not switch the page from the mailto fallback to Formspree.
+
 If the variable is empty, the page shows a `mailto:` fallback instead of posting.
 
 ## Routes
