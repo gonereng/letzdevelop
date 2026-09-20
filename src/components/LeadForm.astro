@@ -111,12 +111,20 @@ const mailto =
       </button>
     </form>
   ) : (
-    <p>
-      Formular folgt nach der Einrichtung. Schreiben Sie uns an{" "}
-      <a class="underline" href={mailto}>
-        {site.email}
+    <div class="grid gap-4">
+      <p>
+        {variant === "vorschau" ? (
+          <>
+            Schreiben Sie uns an {site.email} mit Ihrer Website-Adresse. Die Vorschau ist{" "}
+            <strong>unverbindlich</strong> und begründet <strong>keine Kaufverpflichtung</strong>.
+          </>
+        ) : (
+          <>Schreiben Sie uns an {site.email}. Wir antworten auf Deutsch.</>
+        )}
+      </p>
+      <a class="cta cta-primary justify-self-start" href={mailto}>
+        E-Mail an {site.email}
       </a>
-      .
-    </p>
+    </div>
   )
 }
