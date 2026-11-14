@@ -1,0 +1,842 @@
+---
+import { site } from "../content/site";
+import { formspreeAction } from "../lib/form";
+
+const action = formspreeAction(import.meta.env.PUBLIC_FORMSPREE_ID);
+const TOTAL = 5;
+---
+
+<div class="funnel" data-funnel data-email={site.email}>
+  <div class="progress" data-progress hidden>
+    <div class="progress-meta">
+      <span data-step-label>Schritt 1 von {TOTAL}</span>
+      <span>Unverbindlich · ca. 1 Minute</span>
+    </div>
+    <div class="progress-track" aria-hidden="true"><div class="progress-fill" data-progress-fill></div></div>
+  </div>
+
+  <form
+    class="steps"
+    action={action ?? `mailto:${site.email}`}
+    method="POST"
+    enctype={action ? undefined : "text/plain"}
+    data-action={action ?? ""}
+    data-total={TOTAL}
+  >
+    <input type="hidden" name="_subject" value="Vorschau-Anfrage" data-subject />
+    <input type="hidden" name="formular" value="anfrage" />
+    <p class="hp" aria-hidden="true">
+      <label>
+        Nicht ausfüllen
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+      </label>
+    </p>
+
+    <!-- 1 · Vorhaben -->
+    <fieldset class="step" data-step="1">
+      <legend class="step-head">
+        <span class="step-no">1</span>
+        <span class="step-q">Worum geht es bei Ihnen?</span>
+      </legend>
+      <p class="step-lead">Wählen Sie, was am besten passt. Sie können später jederzeit zurück.</p>
+      <div class="choices choices-2">
+        <label class="opt">
+          <input class="sr-only" type="radio" name="vorhaben" id="vorhaben-neu" value="neu" required />
+          <span class="opt-tag">Neu</span>
+          <span class="opt-title">Neue Website</span>
+          <span class="opt-text">Ihr Betrieb hat noch keine Website oder fängt ganz neu an.</span>
+        </label>
+        <label class="opt">
+          <input class="sr-only" type="radio" name="vorhaben" id="vorhaben-redesign" value="redesign" />
+          <span class="opt-tag">Redesign</span>
+          <span class="opt-title">Bestehende Website erneuern</span>
+          <span class="opt-text">Die Adresse bleibt, Auftritt und Technik kommen auf heutigen Stand.</span>
+        </label>
+      </div>
+      <p class="error" data-error hidden></p>
+    </fieldset>
+
+    <!-- 2 · Website -->
+    <fieldset class="step" data-step="2">
+      <legend class="step-head">
+        <span class="step-no">2</span>
+        <span class="step-q" data-q-website>Wie lautet die Adresse Ihrer Website?</span>
+      </legend>
+      <p class="step-lead" data-lead-website>
+        Bei einem Redesign Ihre aktuelle Website. Bei einer neuen Website eine Domain oder ein Online-Profil, falls vorhanden.
+      </p>
+      <div class="field">
+        <label for="anfrage-website" data-label-website>Website-Adresse</label>
+        <input
+          id="anfrage-website"
+          name="website"
+          type="text"
+          inputmode="url"
+          autocomplete="url"
+          placeholder="meinbetrieb.lu"
+          aria-describedby="anfrage-website-hint"
+        />
+        <span class="hint" id="anfrage-website-hint">Ohne „https://“ geht es auch.</span>
+      </div>
+      <p class="error" data-error hidden></p>
+      <div class="actions" data-js-only hidden>
+        <button type="button" class="cta cta-primary" data-next>Weiter</button>
+        <button type="button" class="cta cta-secondary" data-skip-website hidden>Noch nichts vorhanden</button>
+        <button type="button" class="back" data-back>Zurück</button>
+      </div>
+    </fieldset>
+
+    <!-- 3 · Branche -->
+    <fieldset class="step" data-step="3">
+      <legend class="step-head">
+        <span class="step-no">3</span>
+        <span class="step-q">In welcher Branche ist Ihr Betrieb tätig?</span>
+      </legend>
+      <p class="step-lead">So wissen wir, welche Inhalte Ihre Kundschaft zuerst sucht.</p>
+      <div class="chips">
+        {
+          site.funnel.sectors.map((sector, i) => (
+            <label class="chip">
+              <input class="sr-only" type="radio" name="branche" id={`branche-${i}`} value={sector} required={i === 0} />
+              {sector}
+            </label>
+          ))
+        }
+        <label class="chip">
+          <input class="sr-only" type="radio" name="branche" id="branche-andere" value="Andere" data-other />
+          Andere
+        </label>
+      </div>
+      <div class="field" data-other-field>
+        <label for="anfrage-branche-andere">Andere Branche</label>
+        <input id="anfrage-branche-andere" name="branche_andere" type="text" placeholder="z. B. Fahrschule" />
+      </div>
+      <p class="error" data-error hidden></p>
+      <div class="actions" data-js-only hidden>
+        <button type="button" class="cta cta-primary" data-next>Weiter</button>
+        <button type="button" class="back" data-back>Zurück</button>
+      </div>
+    </fieldset>
+
+    <!-- 4 · Animationen -->
+    <fieldset class="step" data-step="4">
+      <legend class="step-head">
+        <span class="step-no">4</span>
+        <span class="step-q">Wie viel Bewegung darf Ihre Website haben?</span>
+      </legend>
+      <p class="step-lead">
+        Fahren Sie über eine Karte oder tippen Sie sie an, um ein Beispiel zu sehen. Alle drei
+        Varianten kosten gleich viel.
+      </p>
+      <div class="choices choices-3">
+        {
+          site.funnel.animations.map((option, i) => (
+            <label class="opt">
+              <input
+                class="sr-only"
+                type="radio"
+                name="animation"
+                id={`animation-${option.id}`}
+                value={option.label}
+                required={i === 0}
+              />
+              <span class={`frame frame-${option.id}`} aria-hidden="true">
+                <span class="frame-bar"><i></i><i></i><i></i></span>
+                <span class="vp">
+                  <span class="b b-hero"></span>
+                  <span class="b b-line"></span>
+                  <span class="b b-line b-short"></span>
+                  <span class="b-row"><span class="b b-tile"></span><span class="b b-tile"></span><span class="b b-tile"></span></span>
+                  <span class="b b-btn"></span>
+                </span>
+              </span>
+              <span class="opt-title">{option.label}</span>
+              <span class="opt-text">{option.text}</span>
+            </label>
+          ))
+        }
+      </div>
+      <p class="error" data-error hidden></p>
+      <div class="actions" data-js-only hidden>
+        <button type="button" class="cta cta-primary" data-next>Weiter</button>
+        <button type="button" class="back" data-back>Zurück</button>
+      </div>
+    </fieldset>
+
+    <!-- 5 · Kontakt -->
+    <fieldset class="step" data-step="5">
+      <legend class="step-head">
+        <span class="step-no">5</span>
+        <span class="step-q">Wohin dürfen wir Ihre Vorschau schicken?</span>
+      </legend>
+      <p class="step-lead">
+        In der Regel melden wir uns innerhalb von {site.turnaroundDays} Werktagen. Die Vorschau ist
+        unverbindlich.
+      </p>
+      <div class="field">
+        <label for="anfrage-name">Name</label>
+        <input id="anfrage-name" name="name" type="text" autocomplete="name" required />
+      </div>
+      <div class="field">
+        <label for="anfrage-email">E-Mail</label>
+        <input id="anfrage-email" name="email" type="email" autocomplete="email" required />
+      </div>
+      <label class="consent">
+        <input type="checkbox" id="anfrage-einverstaendnis" name="einverstaendnis" value="ja" required />
+        <span>
+          Ich bin einverstanden, dass LetzDevelop mich zur <strong>unverbindlichen</strong> Vorschau
+          kontaktiert. Es entsteht <strong>keine Kaufverpflichtung</strong>. Details in der
+          <a class="underline" href="/datenschutz">Datenschutzerklärung</a>.
+        </span>
+      </label>
+      <p class="error" data-error hidden></p>
+      <div class="actions">
+        <button type="submit" class="cta cta-primary" data-submit>Unverbindliche Vorschau anfragen</button>
+        <button type="button" class="back" data-back data-js-only hidden>Zurück</button>
+      </div>
+    </fieldset>
+  </form>
+
+  <section class="done" data-done hidden aria-labelledby="anfrage-done-title">
+    <span class="stamp">Angefragt</span>
+    <h2 id="anfrage-done-title" class="text-3xl md:text-4xl" tabindex="-1">Danke, wir haben Ihre Anfrage.</h2>
+    <dl class="summary" data-summary></dl>
+    <p class="note">
+      Wir melden uns in der Regel innerhalb von {site.turnaroundDays} Werktagen mit einer Richtung.
+      Die Vorschau bleibt <strong>unverbindlich</strong>. Daraus entsteht
+      <strong>keine Kaufverpflichtung</strong>.
+    </p>
+    <p class="note" data-mailto-note hidden>
+      Das Formular ist noch nicht verbunden. Bitte senden Sie die Angaben per E-Mail:
+      <a class="underline" data-mailto href="#">{site.email}</a>
+    </p>
+    <a class="cta cta-secondary justify-self-start" href="/">Zur Startseite</a>
+  </section>
+</div>
+
+<script>
+  import { funnelSubject, isVorhaben, normalizeWebsite } from "../lib/funnel";
+
+  const root = document.querySelector<HTMLElement>("[data-funnel]");
+  if (root) init(root);
+
+  function init(root: HTMLElement) {
+    const form = root.querySelector<HTMLFormElement>("form")!;
+    const steps = Array.from(form.querySelectorAll<HTMLFieldSetElement>(".step"));
+    const total = Number(form.dataset.total);
+    const progress = root.querySelector<HTMLElement>("[data-progress]")!;
+    const stepLabel = root.querySelector<HTMLElement>("[data-step-label]")!;
+    const fill = root.querySelector<HTMLElement>("[data-progress-fill]")!;
+    const done = root.querySelector<HTMLElement>("[data-done]")!;
+    const websiteInput = form.querySelector<HTMLInputElement>("#anfrage-website")!;
+    const otherInput = form.querySelector<HTMLInputElement>("#anfrage-branche-andere")!;
+    const otherField = form.querySelector<HTMLElement>("[data-other-field]")!;
+    const skipWebsite = form.querySelector<HTMLButtonElement>("[data-skip-website]")!;
+    const submit = form.querySelector<HTMLButtonElement>("[data-submit]")!;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let current = 1;
+
+    // Enhance: one question per screen, our own validation.
+    form.noValidate = true;
+    root.classList.add("is-enhanced");
+    progress.hidden = false;
+    form.querySelectorAll<HTMLElement>("[data-js-only]").forEach((el) => (el.hidden = false));
+    otherField.hidden = true;
+
+    const checked = (name: string) =>
+      form.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)?.value ?? "";
+    const vorhaben = () => (checked("vorhaben") === "redesign" ? "redesign" : "neu");
+    const branche = () => (checked("branche") === "Andere" ? otherInput.value.trim() : checked("branche"));
+
+    function setError(step: number, message = "") {
+      const el = steps[step - 1].querySelector<HTMLElement>("[data-error]")!;
+      el.textContent = message;
+      el.hidden = !message;
+    }
+
+    function invalid(input: HTMLInputElement, step: number, message: string) {
+      input.setAttribute("aria-invalid", "true");
+      setError(step, message);
+      input.focus();
+      return false;
+    }
+
+    function configureWebsiteStep() {
+      const redesign = vorhaben() === "redesign";
+      root.querySelector("[data-q-website]")!.textContent = redesign
+        ? "Wie lautet die Adresse Ihrer aktuellen Website?"
+        : "Gibt es schon eine Domain oder ein Online-Profil?";
+      root.querySelector("[data-lead-website]")!.textContent = redesign
+        ? "Wir sehen uns die Seite an und schicken Ihnen eine Richtung für den neuen Auftritt."
+        : "Zum Beispiel eine reservierte Adresse, eine Facebook-Seite oder ein Google-Eintrag. Wenn nicht, ist das kein Problem.";
+      root.querySelector("[data-label-website]")!.textContent = redesign ? "Website-Adresse" : "Adresse (optional)";
+      skipWebsite.hidden = redesign;
+    }
+
+    function show(step: number, focus = true) {
+      current = step;
+      steps.forEach((s) => s.classList.toggle("is-current", Number(s.dataset.step) === step));
+      stepLabel.textContent = `Schritt ${step} von ${total}`;
+      fill.style.width = `${(step / total) * 100}%`;
+      if (step === 2) configureWebsiteStep();
+      if (focus) {
+        const q = steps[step - 1].querySelector<HTMLElement>(".step-q")!;
+        q.tabIndex = -1;
+        q.focus({ preventScroll: true });
+        root.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+      }
+    }
+
+    function validate(step: number): boolean {
+      form.querySelectorAll("[aria-invalid]").forEach((el) => el.removeAttribute("aria-invalid"));
+      if (step === 1 && !checked("vorhaben")) {
+        setError(1, "Bitte wählen Sie eine der beiden Möglichkeiten.");
+        return false;
+      }
+      if (step === 2) {
+        const normalized = normalizeWebsite(websiteInput.value);
+        if (normalized === null) {
+          return invalid(websiteInput, 2, "Diese Adresse sieht unvollständig aus. Beispiel: meinbetrieb.lu");
+        }
+        if (!normalized && vorhaben() === "redesign") {
+          return invalid(websiteInput, 2, "Bitte geben Sie die Adresse Ihrer aktuellen Website ein.");
+        }
+        websiteInput.value = normalized;
+      }
+      if (step === 3) {
+        if (!checked("branche")) {
+          setError(3, "Bitte wählen Sie eine Branche.");
+          return false;
+        }
+        if (checked("branche") === "Andere" && !otherInput.value.trim()) {
+          return invalid(otherInput, 3, "Bitte nennen Sie kurz Ihre Branche.");
+        }
+      }
+      if (step === 4 && !checked("animation")) {
+        setError(4, "Bitte wählen Sie eine Variante.");
+        return false;
+      }
+      if (step === 5) {
+        const name = form.querySelector<HTMLInputElement>("#anfrage-name")!;
+        const email = form.querySelector<HTMLInputElement>("#anfrage-email")!;
+        const consent = form.querySelector<HTMLInputElement>("#anfrage-einverstaendnis")!;
+        if (!name.value.trim()) return invalid(name, 5, "Bitte geben Sie Ihren Namen ein.");
+        if (!email.validity.valid || !email.value.trim()) {
+          return invalid(email, 5, "Bitte prüfen Sie Ihre E-Mail-Adresse. Beispiel: name@betrieb.lu");
+        }
+        if (!consent.checked) {
+          return invalid(consent, 5, "Bitte bestätigen Sie das Einverständnis, damit wir Sie kontaktieren dürfen.");
+        }
+      }
+      setError(step);
+      return true;
+    }
+
+    const next = () => {
+      if (validate(current) && current < total) show(current + 1);
+    };
+    const advanceSoon = (step: number) => window.setTimeout(() => current === step && show(step + 1), 220);
+
+    form.addEventListener("click", (event) => {
+      const target = event.target as HTMLElement;
+      if (target.closest("[data-next]")) next();
+      if (target.closest("[data-back]") && current > 1) show(current - 1);
+    });
+
+    form.querySelectorAll<HTMLInputElement>('input[name="vorhaben"]').forEach((radio) =>
+      radio.addEventListener("change", () => {
+        setError(1);
+        advanceSoon(1);
+      }),
+    );
+
+    skipWebsite.addEventListener("click", () => {
+      websiteInput.value = "";
+      setError(2);
+      show(3);
+    });
+
+    form.querySelectorAll<HTMLInputElement>('input[name="branche"]').forEach((radio) =>
+      radio.addEventListener("change", () => {
+        setError(3);
+        const other = radio.hasAttribute("data-other");
+        otherField.hidden = !other;
+        if (other) otherInput.focus();
+        else advanceSoon(3);
+      }),
+    );
+
+    form.querySelectorAll<HTMLInputElement>('input[name="animation"]').forEach((radio) =>
+      radio.addEventListener("change", () => setError(4)),
+    );
+
+    [websiteInput, otherInput].forEach((input) =>
+      input.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          next();
+        }
+      }),
+    );
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!validate(5)) return;
+
+      const answers = {
+        vorhaben: vorhaben(),
+        website: websiteInput.value.trim(),
+        branche: branche(),
+        animation: checked("animation"),
+      } as const;
+      const subject = funnelSubject(answers);
+      form.querySelector<HTMLInputElement>("[data-subject]")!.value = subject;
+
+      const data = new FormData(form);
+      data.set("branche", answers.branche);
+      data.delete("branche_andere");
+      data.set("vorhaben", answers.vorhaben === "redesign" ? "Redesign" : "Neue Website");
+
+      const endpoint = form.dataset.action;
+      if (endpoint) {
+        submit.disabled = true;
+        submit.textContent = "Wird gesendet …";
+        try {
+          const response = await fetch(endpoint, {
+            method: "POST",
+            body: data,
+            headers: { Accept: "application/json" },
+          });
+          if (!response.ok) throw new Error(String(response.status));
+        } catch {
+          submit.disabled = false;
+          submit.textContent = "Unverbindliche Vorschau anfragen";
+          setError(
+            5,
+            `Das Senden hat nicht geklappt. Bitte versuchen Sie es noch einmal oder schreiben Sie an ${root.dataset.email}.`,
+          );
+          return;
+        }
+      }
+
+      const rows: [string, string][] = [
+        ["Vorhaben", answers.vorhaben === "redesign" ? "Redesign einer bestehenden Website" : "Neue Website"],
+        [answers.vorhaben === "redesign" ? "Aktuelle Website" : "Domain / Profil", answers.website || "Noch nichts vorhanden"],
+        ["Branche", answers.branche],
+        ["Animationen", answers.animation],
+        ["Kontakt", `${data.get("name")}, ${data.get("email")}`],
+      ];
+      const summary = root.querySelector<HTMLElement>("[data-summary]")!;
+      summary.replaceChildren(
+        ...rows.flatMap(([label, value]) => {
+          const dt = document.createElement("dt");
+          dt.textContent = label;
+          const dd = document.createElement("dd");
+          dd.textContent = value;
+          return [dt, dd];
+        }),
+      );
+
+      if (!endpoint) {
+        const body = rows.map(([label, value]) => `${label}: ${value}`).join("\n");
+        const link = root.querySelector<HTMLAnchorElement>("[data-mailto]")!;
+        link.href = `mailto:${root.dataset.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        root.querySelector<HTMLElement>("[data-mailto-note]")!.hidden = false;
+      }
+
+      form.hidden = true;
+      progress.hidden = true;
+      done.hidden = false;
+      root.querySelector<HTMLElement>("#anfrage-done-title")!.focus({ preventScroll: true });
+      root.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+    });
+
+    // Homepage links pass ?art=neu|redesign, so the first answer is already given.
+    const art = new URLSearchParams(window.location.search).get("art");
+    if (isVorhaben(art)) {
+      form.querySelector<HTMLInputElement>(`#vorhaben-${art}`)!.checked = true;
+      show(2, false);
+    } else {
+      show(1, false);
+    }
+  }
+</script>
+
+<style>
+  .funnel {
+    scroll-margin-top: 6rem;
+    display: grid;
+    gap: 2rem;
+  }
+
+  /* Progress */
+  .progress {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .progress-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    font-size: 0.9rem;
+    color: var(--color-muted);
+  }
+  .progress-track {
+    position: relative;
+    height: 3px;
+    overflow: hidden;
+    background: var(--color-stone);
+  }
+  .progress-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 20%;
+    background: var(--color-red);
+    transition: width 0.35s ease;
+  }
+
+  /* Steps: stacked without JS, one at a time with JS */
+  .steps {
+    display: grid;
+    gap: 3.5rem;
+  }
+  .is-enhanced .step:not(.is-current) {
+    display: none;
+  }
+  .step {
+    display: grid;
+    gap: 1.25rem;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .step-head {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+    padding: 0;
+    font-family: var(--font-display);
+    font-weight: 560;
+    font-size: clamp(1.7rem, 4.5vw, 2.3rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    hyphens: none;
+    text-wrap: balance;
+  }
+  .step-no {
+    font-size: 0.55em;
+    color: var(--color-red);
+  }
+  .is-enhanced .step-no {
+    display: none;
+  }
+  .step-q:focus {
+    outline: none;
+  }
+  .step-lead {
+    margin: 0 0 0.5rem;
+    max-width: 38rem;
+    color: var(--color-muted);
+  }
+
+  /* Choice cards */
+  .choices {
+    display: grid;
+    gap: 0.9rem;
+  }
+  .choices-2 {
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  }
+  .choices-3 {
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  }
+  .opt {
+    display: grid;
+    align-content: start;
+    gap: 0.45rem;
+    min-width: 0;
+    padding: 1.1rem 1.2rem;
+    border: 1.5px solid var(--color-stone);
+    border-radius: 0.9rem;
+    background: var(--color-cream);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+  }
+  .opt:hover {
+    border-color: var(--color-ink);
+  }
+  .opt:has(input:checked) {
+    border-color: var(--color-red);
+    background: #fff;
+    box-shadow: inset 0 0 0 1px var(--color-red);
+  }
+  .opt:has(input:focus-visible) {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+  .opt-tag {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-red);
+  }
+  .opt-title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .opt-text {
+    font-size: 1rem;
+    line-height: 1.45;
+    color: var(--color-muted);
+  }
+
+  /* Sector chips */
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border: 1.5px solid transparent;
+    border-radius: 999px;
+    background: var(--color-chip);
+    font-weight: 600;
+    font-size: 1.02rem;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+  }
+  .chip:hover {
+    border-color: var(--color-ink);
+  }
+  .chip:has(input:checked) {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+  .chip:has(input:focus-visible) {
+    outline: 2px solid var(--color-red);
+    outline-offset: 2px;
+  }
+
+  .hint {
+    font-size: 0.92rem;
+    color: var(--color-muted);
+  }
+  .field input[aria-invalid="true"] {
+    border-color: var(--color-red);
+  }
+  .error {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-red-dark);
+  }
+  .consent {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    font-size: 0.98rem;
+  }
+  .consent input {
+    flex: none;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.3rem;
+    accent-color: var(--color-red);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+    margin-top: 0.5rem;
+  }
+  .cta[disabled] {
+    opacity: 0.7;
+    cursor: progress;
+  }
+  .back {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: var(--color-muted);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+  .back:hover {
+    color: var(--color-ink);
+  }
+
+  /* Animation previews: a small browser frame per level, played on hover, focus or selection */
+  .frame {
+    display: block;
+    max-width: 100%;
+    margin-bottom: 0.4rem;
+    overflow: hidden;
+    border: 1px solid var(--color-stone);
+    border-radius: 0.5rem;
+    background: var(--color-paper);
+  }
+  .frame-bar {
+    display: flex;
+    gap: 4px;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--color-stone);
+    background: var(--color-chip);
+  }
+  .frame-bar i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-stone);
+  }
+  .vp {
+    display: grid;
+    gap: 7px;
+    padding: 10px;
+  }
+  .b {
+    display: block;
+    border-radius: 3px;
+    background: var(--color-stone);
+  }
+  .b-hero {
+    height: 34px;
+    background: var(--color-ink);
+  }
+  .b-line {
+    height: 6px;
+    width: 80%;
+  }
+  .b-short {
+    width: 55%;
+  }
+  .b-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+  .b-tile {
+    height: 26px;
+    border: 1px solid var(--color-stone);
+    background: var(--color-chip);
+  }
+  .b-btn {
+    height: 12px;
+    width: 38%;
+    border-radius: 999px;
+    background: var(--color-red);
+  }
+
+  .opt:is(:hover, :focus-within, :has(input:checked)) .frame-dezent .vp > * {
+    animation: fade-up 3.2s ease-out infinite both;
+  }
+  .opt:is(:hover, :focus-within, :has(input:checked)) .frame-dezent .vp > :nth-child(2) { animation-delay: 0.12s; }
+  .opt:is(:hover, :focus-within, :has(input:checked)) .frame-dezent .vp > :nth-child(3) { animation-delay: 0.24s; }
+  .opt:is(:hover, :focus-within, :has(input:checked)) .frame-dezent .vp > :nth-child(4) { animation-delay: 0.36s; }
+  .opt:is(:hover, :focus-within, :has(input:checked)) .frame-dezent .vp > :nth-child(5) { animation-delay: 0.48s; }
+
+  .opt:is(:hover, :focus-within, :has(input:checked)) .frame-ausgepraegt .b-hero {
+    transform-origin: left center;
+    animation: hero-in 3.2s cubic-bezier(0.2, 0.8, 0.2, 1) infinite both;
+  }
+  .opt:is(:hover, :focus-within, :has(input:checked)) .frame-ausgepraegt .b-line {
+    animation: slide-in 3.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s infinite both;
+  }
+  .opt:is(:hover, :focus-within, :has(input:checked)) .frame-ausgepraegt .b-short { animation-delay: 0.3s; }
+  .opt:is(:hover, :focus-within, :has(input:checked)) .frame-ausgepraegt .b-tile {
+    animation: tile-in 3.2s cubic-bezier(0.3, 1.4, 0.5, 1) infinite both;
+  }
+  .opt:is(:hover, :focus-within, :has(input:checked)) .frame-ausgepraegt .b-tile:nth-child(1) { animation-delay: 0.45s; }
+  .opt:is(:hover, :focus-within, :has(input:checked)) .frame-ausgepraegt .b-tile:nth-child(2) { animation-delay: 0.6s; }
+  .opt:is(:hover, :focus-within, :has(input:checked)) .frame-ausgepraegt .b-tile:nth-child(3) { animation-delay: 0.75s; }
+  .opt:is(:hover, :focus-within, :has(input:checked)) .frame-ausgepraegt .b-btn {
+    animation: btn-in 3.2s cubic-bezier(0.3, 1.6, 0.5, 1) 0.95s infinite both;
+  }
+
+  @keyframes fade-up {
+    0% { opacity: 0; transform: translateY(6px); }
+    18%, 100% { opacity: 1; transform: none; }
+  }
+  @keyframes hero-in {
+    0% { opacity: 0; transform: scaleX(0.15); }
+    22%, 100% { opacity: 1; transform: none; }
+  }
+  @keyframes slide-in {
+    0% { opacity: 0; transform: translateX(-40px); }
+    20%, 100% { opacity: 1; transform: none; }
+  }
+  @keyframes tile-in {
+    0% { opacity: 0; transform: translateY(26px) rotate(-6deg) scale(0.7); }
+    18%, 100% { opacity: 1; transform: none; }
+  }
+  @keyframes btn-in {
+    0% { opacity: 0; transform: scale(0.2); }
+    14%, 100% { opacity: 1; transform: none; }
+  }
+
+  /* Confirmation */
+  .done {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .done h2:focus {
+    outline: none;
+  }
+  .stamp {
+    justify-self: start;
+    padding: 0.3rem 0.7rem;
+    border: 2px solid var(--color-red);
+    color: var(--color-red);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transform: rotate(-2deg);
+  }
+  .summary {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.5rem 1.25rem;
+    margin: 0;
+    padding: 1.2rem 1.3rem;
+    border: 1px solid var(--color-stone);
+    border-radius: 0.9rem;
+    background: var(--color-cream);
+  }
+  .summary :global(dt) {
+    color: var(--color-muted);
+    font-size: 0.95rem;
+  }
+  .summary :global(dd) {
+    margin: 0;
+    min-width: 0;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+  .note {
+    margin: 0;
+    padding: 0.2rem 0 0.2rem 1rem;
+    border-left: 3px solid var(--color-moss);
+  }
+
+  @media (max-width: 520px) {
+    .summary {
+      grid-template-columns: 1fr;
+      gap: 0.1rem;
+    }
+    .summary :global(dd) {
+      margin-bottom: 0.6rem;
+    }
+  }
+</style>

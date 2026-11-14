@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Funnel from "../components/Funnel.astro";
+import { site } from "../content/site";
+---
+
+<BaseLayout
+  title="Unverbindliche Vorschau anfragen – LetzDevelop"
+  description={`Fünf kurze Fragen zu Ihrer Website. Sie erhalten in ${site.turnaroundDays} Werktagen eine unverbindliche Vorschau, ohne Kaufverpflichtung.`}
+>
+  <section class="section" aria-labelledby="anfrage-title">
+    <div class="wrap max-w-[48rem]">
+      <p class="section-kicker">Unverbindliche Vorschau</p>
+      <h1 id="anfrage-title" class="text-3xl md:text-4xl">In fünf kurzen Schritten zu Ihrer Vorschau.</h1>
+      <p class="lede mt-4 mb-10">
+        Sie erhalten in {site.turnaroundDays} Werktagen eine Richtung für Ihren Auftritt. Es entsteht
+        keine Kaufverpflichtung.
+      </p>
+      <Funnel />
+    </div>
+  </section>
+</BaseLayout>

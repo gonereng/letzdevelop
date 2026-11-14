@@ -1,6 +1,20 @@
 ---
-import LeadForm from "../LeadForm.astro";
 import { site } from "../../content/site";
+
+const entries = [
+  {
+    href: "/anfrage?art=redesign",
+    tag: "Redesign",
+    title: "Bestehende Website erneuern",
+    text: "Die Adresse bleibt, Auftritt und Technik kommen auf heutigen Stand.",
+  },
+  {
+    href: "/anfrage?art=neu",
+    tag: "Neu",
+    title: "Neue Website",
+    text: "Ihr Betrieb hat noch keine Website oder fängt ganz neu an.",
+  },
+];
 ---
 
 <section class="section bg-moss text-cream" id="vorschau" aria-labelledby="vorschau-title">
@@ -11,14 +25,67 @@ import { site } from "../../content/site";
         Sehen Sie eine Richtung – unverbindlich.
       </h2>
       <p class="mt-5 text-lg text-stone max-w-xl">
-        Schicken Sie uns die Adresse Ihrer heutigen Seite. In {site.turnaroundDays} Werktagen
-        erhalten Sie einen Vorschlag, wohin der Auftritt gehen könnte. Die Prüfung ist
+        Fünf kurze Fragen, dann erhalten Sie in {site.turnaroundDays} Werktagen einen Vorschlag, wohin
+        der Auftritt gehen könnte. Die Prüfung ist
         <strong class="text-cream"> unverbindlich</strong>. Danach besteht
         <strong class="text-cream"> keine Kaufverpflichtung</strong>.
       </p>
     </div>
-    <div class="rounded-2xl bg-paper text-ink p-6 md:p-8">
-      <LeadForm variant="vorschau" />
+    <div class="grid gap-4">
+      <p class="font-semibold text-cream">Worum geht es bei Ihnen?</p>
+      {
+        entries.map((entry) => (
+          <a class="entry" href={entry.href}>
+            <span class="entry-tag">{entry.tag}</span>
+            <span class="entry-title">{entry.title}</span>
+            <span class="entry-text">{entry.text}</span>
+            <span class="entry-go" aria-hidden="true">Weiter →</span>
+          </a>
+        ))
+      }
     </div>
   </div>
 </section>
+
+<style>
+  .entry {
+    display: grid;
+    gap: 0.35rem;
+    padding: 1.25rem 1.4rem;
+    border: 1.5px solid transparent;
+    border-radius: 1rem;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    text-decoration: none;
+    transition: border-color 0.15s ease;
+  }
+  .entry:hover {
+    border-color: var(--color-red);
+  }
+  .entry:focus-visible {
+    outline: 2px solid var(--color-cream);
+    outline-offset: 3px;
+  }
+  .entry-tag {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-red);
+  }
+  .entry-title {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .entry-text {
+    color: var(--color-muted);
+    font-size: 1rem;
+  }
+  .entry-go {
+    margin-top: 0.25rem;
+    font-weight: 700;
+    color: var(--color-red);
+  }
+</style>

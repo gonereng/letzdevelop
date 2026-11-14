@@ -149,6 +149,33 @@ export const site = {
       a: "An hello@letzdevelop.lu über Formspree. Einzelheiten stehen in der Datenschutzerklärung.",
     },
   ],
+  funnel: {
+    sectors: [
+      "Handwerk",
+      "Praxis & Gesundheit",
+      "Kanzlei & Beratung",
+      "Handel",
+      "Gastronomie",
+      "Dienstleistung",
+    ],
+    animations: [
+      {
+        id: "keine",
+        label: "Keine",
+        text: "Ruhig und sachlich. Alles steht sofort da.",
+      },
+      {
+        id: "dezent",
+        label: "Dezent",
+        text: "Inhalte blenden sanft ein, Schaltflächen reagieren auf die Maus.",
+      },
+      {
+        id: "ausgepraegt",
+        label: "Ausgeprägt",
+        text: "Große Auftritte beim Scrollen. Für Betriebe, die auffallen wollen.",
+      },
+    ],
+  },
 } as const;
 
 export type PackageId = (typeof site.packages)[number]["id"];
